@@ -59,4 +59,15 @@ public class Shop {
     public void setGeohash(String geohash) {
         this.geohash = geohash;
     }
+
+    @Override
+    public String toString() {
+        return "Shop{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", geohash='" + geohash + '\'' +
+                '}';
+    }
 }

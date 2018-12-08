@@ -24,6 +24,7 @@ public class ShopDaoImplTest {
     public void getShop() throws Exception {
         Shop shop = shopDao.getShop(1);
         System.out.println(shop);
+        System.out.println(shopDao.getAllShops());
     }
 
     @Test
@@ -33,7 +34,7 @@ public class ShopDaoImplTest {
 
     @Test
     public void getNearbyShopByLongitudeAndLatitude() throws Exception {
-
+        System.out.println(shopDao.getNearbyShopByLongitudeAndLatitude(39.944000, 116.427000));
     }
 
     @Test

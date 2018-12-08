@@ -1,7 +1,6 @@
 package com.babyduncan.dao;
 
 import com.babyduncan.model.Shop;
-import com.sun.tools.javac.util.List;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
@@ -18,6 +17,9 @@ import javax.sql.DataSource;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -60,12 +62,31 @@ public class ShopDaoImpl implements ShopDao {
         }
     }
 
+    public List<Shop> getAllShops() {
+        SqlSession session = sqlSessionFactory.openSession();
+        try {
+            List<Shop> shops = session.selectList("com.babyduncan.mapper.ShopMapper.selectAllShops");
+            return shops;
+        } finally {
+            session.close();
+        }
+    }
+
     public boolean updateShop(Shop shop) {
         return false;
     }
 
     public List<Shop> getNearbyShopByLongitudeAndLatitude(double longitude, double latitude) {
-        return null;
+        SqlSession session = sqlSessionFactory.openSession();
+        Map hashmap = new HashMap<String, Double>();
+        hashmap.put("longitude", longitude);
+        hashmap.put("latitude", latitude);
+        try {
+            List<Shop> shops = session.selectList("com.babyduncan.mapper.ShopMapper.getNearbyShopByLongitudeAndLatitude", hashmap);
+            return shops;
+        } finally {
+            session.close();
+        }
     }
 
     public List<Shop> getNearbyShopByGeoHash(String geohash) {

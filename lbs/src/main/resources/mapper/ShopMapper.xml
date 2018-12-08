@@ -8,4 +8,12 @@
     <select id="selectOneShop" resultType="Shop">
         select * from shop where id = #{id}
     </select>
+    <select id="selectAllShops" resultType="Shop">
+        select * from shop
+    </select>
+
+    <select id="getNearbyShopByLongitudeAndLatitude" resultType="Shop" parameterType="hashmap">
+        select * from shop where longitude=#{longitude} and latitude=#{latitude}
+    </select>
+
 </mapper>

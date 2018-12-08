@@ -1,7 +1,7 @@
 package com.babyduncan.dao;
 
 import com.babyduncan.model.Shop;
-import com.sun.tools.javac.util.List;
+import java.util.List;
 
 /**
  * Created by zhaoguohao on 2018/12/8.
@@ -10,6 +10,8 @@ public interface ShopDao {
 
 
     Shop getShop(int id);
+
+    public List<Shop> getAllShops();
 
     boolean updateShop(Shop shop);
 
