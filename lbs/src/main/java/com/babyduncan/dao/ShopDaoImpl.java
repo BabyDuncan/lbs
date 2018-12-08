@@ -28,6 +28,11 @@ import java.util.Map;
 @Service
 public class ShopDaoImpl implements ShopDao {
 
+    /**
+     * 默认地球半径
+     */
+    private static double EARTH_RADIUS = 6371;
+
     private static final Logger logger = Logger.getLogger(ShopDaoImpl.class);
 
     private static SqlSessionFactory sqlSessionFactory;
@@ -76,17 +81,54 @@ public class ShopDaoImpl implements ShopDao {
         return false;
     }
 
-    public List<Shop> getNearbyShopByLongitudeAndLatitude(double longitude, double latitude) {
+    public List<Shop> getNearbyShopByLongitudeAndLatitude(double longitude, double latitude, int radius) {
         SqlSession session = sqlSessionFactory.openSession();
         Map hashmap = new HashMap<String, Double>();
-        hashmap.put("longitude", longitude);
-        hashmap.put("latitude", latitude);
+
+        Map<String, double[]> fourPoint = getSquareFourPoint(longitude, latitude, radius);
+        hashmap.put("minLatitude", fourPoint.get("leftBottomPoint")[0]);
+        hashmap.put("minLongitude", fourPoint.get("rightTopPoint")[1]);
+        hashmap.put("maxLatitude", fourPoint.get("rightTopPoint")[0]);
+        hashmap.put("maxLongitude", fourPoint.get("leftBottomPoint")[1]);
+
+        System.out.println(hashmap);
         try {
             List<Shop> shops = session.selectList("com.babyduncan.mapper.ShopMapper.getNearbyShopByLongitudeAndLatitude", hashmap);
             return shops;
         } finally {
             session.close();
         }
+    }
+
+
+    /**
+     * 计算经纬度点对应正方形4个点的坐标
+     *
+     * @param longitude
+     * @param latitude
+     * @param distance
+     * @return
+     */
+    public Map<String, double[]> getSquareFourPoint(double longitude,
+                                                    double latitude, double distance) {
+        Map<String, double[]> squareMap = new HashMap<String, double[]>();
+        double dLongitude = 2 * (Math.asin(Math.sin(distance
+                / (2 * EARTH_RADIUS))
+                / Math.cos(Math.toRadians(latitude))));
+        dLongitude = Math.toDegrees(dLongitude);
+        double dLatitude = distance / EARTH_RADIUS;
+        dLatitude = Math.toDegrees(dLatitude);
+        double[] leftTopPoint = {latitude + dLatitude, longitude - dLongitude};
+        double[] rightTopPoint = {latitude + dLatitude, longitude + dLongitude};
+        double[] leftBottomPoint = {latitude - dLatitude,
+                longitude - dLongitude};
+        double[] rightBottomPoint = {latitude - dLatitude,
+                longitude + dLongitude};
+        squareMap.put("leftTopPoint", leftTopPoint);
+        squareMap.put("rightTopPoint", rightTopPoint);
+        squareMap.put("leftBottomPoint", leftBottomPoint);
+        squareMap.put("rightBottomPoint", rightBottomPoint);
+        return squareMap;
     }
 
     public List<Shop> getNearbyShopByGeoHash(String geohash) {

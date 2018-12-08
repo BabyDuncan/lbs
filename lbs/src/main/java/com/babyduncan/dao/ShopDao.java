@@ -15,7 +15,7 @@ public interface ShopDao {
 
     boolean updateShop(Shop shop);
 
-    List<Shop> getNearbyShopByLongitudeAndLatitude(double longitude, double latitude);
+    List<Shop> getNearbyShopByLongitudeAndLatitude(double longitude, double latitude,int radius);
 
     List<Shop> getNearbyShopByGeoHash(String geohash);
 

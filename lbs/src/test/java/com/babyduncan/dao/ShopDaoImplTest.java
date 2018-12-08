@@ -34,7 +34,7 @@ public class ShopDaoImplTest {
 
     @Test
     public void getNearbyShopByLongitudeAndLatitude() throws Exception {
-        System.out.println(shopDao.getNearbyShopByLongitudeAndLatitude(39.944000, 116.427000));
+        System.out.println(shopDao.getNearbyShopByLongitudeAndLatitude(39.944000, 116.427000, 100));
     }
 
     @Test

@@ -13,7 +13,8 @@
     </select>
 
     <select id="getNearbyShopByLongitudeAndLatitude" resultType="Shop" parameterType="hashmap">
-        select * from shop where longitude=#{longitude} and latitude=#{latitude}
+                select * from shop where longitude &gt; #{minLongitude} and latitude &gt; #{minLatitude} and longitude &lt; #{maxLongitude} and latitude &lt; #{maxLatitude}
+
     </select>
 
 </mapper>
