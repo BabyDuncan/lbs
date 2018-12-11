@@ -13,4 +13,6 @@
     5，mongodb 
     https://docs.mongodb.com/manual/geospatial-queries/
     
+    6，es
+    https://www.elastic.co/guide/cn/elasticsearch/guide/current/geoloc.html
     
